@@ -40,10 +40,12 @@ export default class PerfectScrollbar {
     if (typeof element === 'string') {
       element = document.querySelector(element);
     }
+    
 
     if (!element || !element.nodeName) {
       throw new Error('no element is specified to initialize PerfectScrollbar');
     }
+    
 
     this.element = element;
 
@@ -74,11 +76,16 @@ export default class PerfectScrollbar {
       element.scrollLeft = originalScrollLeft;
       return result;
     })();
+    
     this.negativeScrollAdjustment = this.isNegativeScroll
       ? element.scrollWidth - element.clientWidth
       : 0;
+    
+    
     this.event = new EventManager();
     this.ownerDocument = element.ownerDocument || document;
+    
+    
 
     this.scrollbarXRail = DOM.div(cls.element.rail('x'));
     element.appendChild(this.scrollbarXRail);
@@ -92,12 +99,16 @@ export default class PerfectScrollbar {
     this.scrollbarXLeft = null;
     const railXStyle = CSS.get(this.scrollbarXRail);
     this.scrollbarXBottom = parseInt(railXStyle.bottom, 10);
+    
+    
     if (isNaN(this.scrollbarXBottom)) {
       this.isScrollbarXUsingBottom = false;
       this.scrollbarXTop = toInt(railXStyle.top);
     } else {
       this.isScrollbarXUsingBottom = true;
     }
+    
+    
     this.railBorderXWidth =
       toInt(railXStyle.borderLeftWidth) + toInt(railXStyle.borderRightWidth);
     // Set rail to display:block to calculate margins
@@ -107,6 +118,7 @@ export default class PerfectScrollbar {
     CSS.set(this.scrollbarXRail, { display: '' });
     this.railXWidth = null;
     this.railXRatio = null;
+    
 
     this.scrollbarYRail = DOM.div(cls.element.rail('y'));
     element.appendChild(this.scrollbarYRail);
@@ -120,16 +132,23 @@ export default class PerfectScrollbar {
     this.scrollbarYTop = null;
     const railYStyle = CSS.get(this.scrollbarYRail);
     this.scrollbarYRight = parseInt(railYStyle.right, 10);
+    
+    
     if (isNaN(this.scrollbarYRight)) {
       this.isScrollbarYUsingRight = false;
       this.scrollbarYLeft = toInt(railYStyle.left);
     } else {
       this.isScrollbarYUsingRight = true;
     }
+    
+    
+    
     this.scrollbarYOuterWidth = this.isRtl ? outerWidth(this.scrollbarY) : null;
+    
     this.railBorderYWidth =
       toInt(railYStyle.borderTopWidth) + toInt(railYStyle.borderBottomWidth);
     CSS.set(this.scrollbarYRail, { display: 'block' });
+    
     this.railYMarginHeight =
       toInt(railYStyle.marginTop) + toInt(railYStyle.marginBottom);
     CSS.set(this.scrollbarYRail, { display: '' });
@@ -170,6 +189,7 @@ export default class PerfectScrollbar {
     this.negativeScrollAdjustment = this.isNegativeScroll
       ? this.element.scrollWidth - this.element.clientWidth
       : 0;
+    
 
     // Recalculate rail margins
     CSS.set(this.scrollbarXRail, { display: 'block' });
@@ -180,6 +200,7 @@ export default class PerfectScrollbar {
     this.railYMarginHeight =
       toInt(CSS.get(this.scrollbarYRail).marginTop) +
       toInt(CSS.get(this.scrollbarYRail).marginBottom);
+    
 
     // Hide scrollbars not to affect scrollWidth and scrollHeight
     CSS.set(this.scrollbarXRail, { display: 'none' });
@@ -193,6 +214,8 @@ export default class PerfectScrollbar {
     CSS.set(this.scrollbarXRail, { display: '' });
     CSS.set(this.scrollbarYRail, { display: '' });
   }
+  
+  
 
   onScroll(e) {
     if (!this.isAlive) {
@@ -207,14 +230,17 @@ export default class PerfectScrollbar {
       this.element.scrollLeft - this.lastScrollLeft
     );
 
+    
     this.lastScrollTop = Math.floor(this.element.scrollTop);
     this.lastScrollLeft = this.element.scrollLeft;
   }
 
+  
   destroy() {
     if (!this.isAlive) {
       return;
     }
+    
 
     this.event.unbindAll();
     DOM.remove(this.scrollbarX);
